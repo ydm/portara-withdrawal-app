@@ -44,3 +44,24 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Dependencies
+    cra
+    "@testing-library/jest-dom"
+    "@testing-library/react"
+    "@testing-library/user-event"
+    "@types/jest"
+    "@types/node"
+    "@types/react"
+    "@types/react-dom"
+    "react"
+    "react-dom"
+    "react-scripts"
+    "typescript"
+    "web-vitals"
+
+    https://docs.walletconnect.com/2.0/web3modal/react/installation
+    "@web3modal/ethereum"
+    "@web3modal/react"
+    "ethers"
+    "wagmi"
