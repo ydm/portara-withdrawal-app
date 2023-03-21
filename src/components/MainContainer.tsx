@@ -28,9 +28,10 @@ async function approve() {
   const chainId = provider.network.chainId;
   const owner = await signer.getAddress();
   const spender = contracts.getAddress("PoolEscrow");
-  // 25 blocks == 5 minutes, should be enough.
-  // const deadline = (await provider.getBlockNumber()) + 25;
-  const deadline: number = 2000000000;
+  // Give 30 minutes to sign both messages and send the transaction.
+  const deadline: number = await provider
+    .getBlock("latest")
+    .then((b) => b.timestamp + 30 * 60);
 
   const stETH: contracts.CustomContract = contracts.getStakedETH(provider);
   const stName: string = await stETH.name().then((x: any) => x.toString());
@@ -135,10 +136,7 @@ export const MainContainer: React.FC = (props: {}): React.ReactElement<{}> => {
     st: BigNumberish,
     rw: BigNumberish
   ): [string, string] => {
-    return [
-      ethers.utils.formatEther(st),
-      ethers.utils.formatEther(rw),
-    ];
+    return [ethers.utils.formatEther(st), ethers.utils.formatEther(rw)];
   };
 
   const [allowances, setAllowance] = useState(formatAllowances(0, 0));
