@@ -307,6 +307,74 @@ export const IPoolEscrow: Abi = [
       {
         indexed: false,
         internalType: "uint256",
+        name: "requestIndex",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "stakedEthAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardEthAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "deferredPayment",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "pending",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "beneficiary",
+        type: "address",
+      },
+    ],
+    name: "DeferredWithdrawalRequested",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "collected",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "remaining",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "collector",
+        type: "address",
+      },
+    ],
+    name: "FeesCollected",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
         name: "stakedEthAmount",
         type: "uint256",
       },
@@ -323,7 +391,7 @@ export const IPoolEscrow: Abi = [
         type: "uint256",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
         name: "beneficiary",
         type: "address",
@@ -391,7 +459,7 @@ export const IPoolEscrow: Abi = [
         type: "uint256",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
         name: "beneficiary",
         type: "address",
@@ -403,12 +471,6 @@ export const IPoolEscrow: Abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
       {
         indexed: false,
         internalType: "uint256",
@@ -427,6 +489,12 @@ export const IPoolEscrow: Abi = [
         name: "end",
         type: "uint256",
       },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
     ],
     name: "RequestsProcessed",
     type: "event",
@@ -436,15 +504,15 @@ export const IPoolEscrow: Abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-      {
-        indexed: false,
         internalType: "uint256",
         name: "value",
         type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
       },
     ],
     name: "Restaked",
@@ -466,7 +534,7 @@ export const IPoolEscrow: Abi = [
         type: "uint256",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
         name: "beneficiary",
         type: "address",
@@ -495,68 +563,6 @@ export const IPoolEscrow: Abi = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "requestIndex",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "stakedEthAmount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "rewardEthAmount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "deferredPayment",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "pending",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "beneficiary",
-        type: "address",
-      },
-    ],
-    name: "WithdrawalRequested",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-    ],
-    name: "applyFee",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "availableBalance",
     outputs: [
@@ -571,15 +577,9 @@ export const IPoolEscrow: Abi = [
   },
   {
     inputs: [],
-    name: "feeFactor",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
+    name: "collectFees",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -771,6 +771,19 @@ export const IPoolEscrow: Abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "pool",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -887,6 +900,19 @@ export const IPoolEscrow: Abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "rewardEthToken",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -910,6 +936,19 @@ export const IPoolEscrow: Abi = [
     name: "setWithdrawalFee",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "stakedEthToken",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -958,6 +997,32 @@ export const IPoolEscrow: Abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "transferAdminRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "uncollectedFees",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "unpause",
     outputs: [],
@@ -975,6 +1040,19 @@ export const IPoolEscrow: Abi = [
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdrawalFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

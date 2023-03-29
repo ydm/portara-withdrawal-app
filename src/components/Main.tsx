@@ -1,6 +1,7 @@
 import React from "react";
 import { Web3Button } from "@web3modal/react";
 import { useAccount } from "wagmi";
+import WithdrawalRequestListContainer from "./WithdrawalRequestListContainer";
 
 type Status = "connected" | "reconnecting" | "connecting" | "disconnected";
 
@@ -35,6 +36,8 @@ export const Main: React.FC<MainProps> = (
       >
         Approve both
       </button>
+
+      <WithdrawalRequestListContainer />
     </>
   );
 };
